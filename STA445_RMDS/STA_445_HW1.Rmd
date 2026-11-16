@@ -1,0 +1,212 @@
+---
+title: "STA-445 HW1"
+author: "Lauren Eisele-Yocum"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+## Exercises  {#Exercises_DataStructures}
+
+```{r setup, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+
+### Exercise 1 {-}
+
+Create a vector of three elements (2,4,6) and name that vector `vec_a`. Create a second vector, `vec_b`, that contains $(8,10,12)$. Add these two vectors together and name the result `vec_c`.
+
+```{r}
+vec_a <- c(2,4,6)
+vec_b <- c(8,10,12)
+
+(vec_c <- vec_a + vec_b)
+```
+I created vec_a and vec_b, then added them together to get vec_c using the c() function.
+
+### Exercise 2 {-}
+
+Create a vector, named `vec_d`, that contains only two elements (14,20). Add this vector to `vec_a`. What is the result and what do you think R did (look up the recycling rule using Google)? What is the warning message that R gives you?
+
+```{r}
+vec_d <- c(14,20)
+
+vec_a + vec_d
+```
+The given warning is saying that in R "recycled" the shorter vector (vecd) in order to match the longer vector (veca). The warning given above is saying that the longer vector (3 elements) is not a multiple of the shorter vector (2 elements)
+
+### Exercise 3 {-}
+
+Next add $5$ to the vector `vec_a`. What is the result and what did R do? Why doesn't in give you a warning message similar to what you saw in the previous problem?
+
+```{r}
+vec_a + 5
+```
+It added 5 to every element in the vector, vec_a. It did not give a warning message because 5 is 1) not a vector and 2) it is a multiple of 3 and thus be added to every element in vec_a. 
+
+### Exercise 5 {-}
+
+Generate the vector of even numbers $\left\{ 2,4,6,\dots,20\right\}$
+
+**a)** Using the `seq()` function and
+
+```{r}
+seq(2, 20, by=2)
+```
+I used seq() in the format (to, from, by) to generate even values from 2-20.
+
+**b)** Using the a:b shortcut and some subsequent algebra. *Hint: Generate a sequence of integers then multiple by 2*.
+
+```{r}
+
+1:10 * 2
+
+```
+I generated a sequence of 1:10 and then multiplied it by 2. 
+
+### Exercise 6 {-}
+
+Generate a vector of $21$ elements that are evenly placed between $0$ and $1$ using the `seq()` command and name this vector `x`. 
+
+```{r}
+(x <- seq(from = 0, to = 1, length.out = 21)) # can't have a by if using length.out, from and by
+```
+21 elements evenly placed between 0 and 1 are arranged in increments of .05. 
+
+### Exercise 8 {-}
+
+Generate the vector $\left\{ 2,2,2,2,4,4,4,4,8,8,8,8\right\}$ using the `rep()` command. You might need to check the help file for `rep()`. In particular, look at the optional argument `each=`.
+
+```{r}
+(rep_fcn <- c(rep(2,4), rep(4,4), rep(8,4))) 
+
+(rep_fcn1 <- rep( c(2, 4, 8), each = 4))
+```
+I generated a vector made up of 3 rep() functions to get the desired values.
+
+### Exercise 11 {-}
+
+Create and manipulate a data frame.
+
+**a)** Create a `data.frame` named `my.trees` that has the following columns:
+
+  + Girth = {8.3, 8.6, 8.8, 10.5, 10.7, 10.8, 11.0}
+  + Height= {70, 65, 63, 72, 81, 83, 66}
+  + Volume= {10.3, 10.3, 10.2, 16.4, 18.8, 19.7, 15.6}
+  
+```{r}
+my.trees <- data.frame(
+  Girth = c(8.3, 8.6, 8.8, 10.5, 10.7, 10.8, 11.0), 
+  Height= c(70, 65, 63, 72, 81, 83, 66),
+  Volume= c(10.3, 10.3, 10.2, 16.4, 18.8, 19.7, 15.6)
+)
+```
+
+I created a dataframe. 
+
+Complete the following without using `dplyr` functions
+
+**b)** Extract the third observation (i.e. the third row)
+```{r}
+my.trees[3,] #using a position
+```
+I used bracket notation to extract the 3rd row. 
+
+**c)** Extract the Girth column referring to it by name (don't use a numerical value based on column position).
+
+```{r}
+my.trees[,'Girth'] #Using the column name but brackets to accurately call the desired column 
+```
+I used bracket notation to extract the Girth column from my my.trees data frame. 
+
+**d)** Print out a data frame of all the observations *except* for the fourth observation. (i.e. Remove the fourth observation/row.)
+
+```{r}
+my.trees[-4,] # (-) Removes and observation 
+```
+I used a (-) inside my bracket notation to remove row 4. 
+
+**e)** Use the `which()` command to create a vector of row indices that have a `girth` greater than 10. Call that vector `index`.
+
+```{r}
+(index <- which(my.trees$Girth > 10)) #which uses a logical and then tells you position of where the logical = TRUE
+```
+I used which() to know which rows have a girth > 10. 
+
+**f)** Use the `index` vector to create a small data set with just the large girth trees.
+
+```{r}
+lg_index <- data.frame(
+  Girth = my.trees$Girth[index],
+  Height = my.trees$Height[index],
+  Volume = my.trees$Volume[index]
+)
+#sqaure brackets are applying the index logical (??)
+```
+
+I created a datafram, lg_index by creating the same column names as before and calling them from the my trees dataset and then  used bracket notation with my index vector to call the rows I was looking for. 
+
+**g)** Use the `index` vector to create a small data set with just the small girth trees.
+
+```{r}
+sm_index <- data.frame(
+  Girth = my.trees$Girth[-index],
+  Height = my.trees$Height[-index],
+  Volume = my.trees$Volume[-index]
+)
+
+# Used sqaure brackets to sort out non-index trees using (-)
+```
+
+I used similar logic to f except I did a (-) index to call all of the rows not in the index vector of my.trees dataframe. 
+
+my.trees$Column - calling the vector and then using [] to apply the index
+
+### Exercise 12 {-}
+
+The following code creates a `data.frame` and then has two different methods for removing the rows with `NA` values in the column `Grade`. Explain the difference between the two.
+
+```{r}
+df <- data.frame(name= c('Alice','Bob','Charlie','Daniel'),
+                 Grade = c(6,8,NA,9))
+
+df[ -which(  is.na(df$Grade) ), ]
+df[  which( !is.na(df$Grade) ), ]
+```
+The first [ ] uses a -which to call and remove NA and the second [] and the second uses an ! before the is.na to call the opposite of is.na.
+
+### Exercise 14 {-}
+
+Create and manipulate a list.
+
+**a)** Create a list named my.test with elements
+
+  + x = c(4,5,6,7,8,9,10)
+  + y = c(34,35,41,40,45,47,51)
+  + slope = 2.82
+  + p.value = 0.000131
+  
+```{r}
+(my.test <- list(
+  x = c(4,5,6,7,8,9,10),
+  y = c(34,35,41,40,45,47,51),
+  slope = 2.82,
+  p.value = 0.000131
+))
+```
+I created a list using the list() function. 
+  
+**b)** Extract the second element in the list.
+
+```{r}
+my.test[2]
+```
+I used bracket notation to extract the second element in my.test list. 
+
+**c)** Extract the element named `p.value` from the list.
+```{r}
+my.test['p.value']
+```
+I used bracket notation with the element name 'p.value' from the my.test list.
+
+
+Overall - can use square brackets to call specific columns and rows in dataframe and lists. Can also apply a logical to a new datafram to create the columns
